@@ -30,34 +30,34 @@ library(readr)
 OilIncident <- read_csv("~/OilGasCanada/ncdntcmprhnsv-eng.csv")
 attach(OilIncident)
 
-OilIncedent$`Release Type` <- as.character(OilIncedent$`Release Type`)
-OilIncedent$`Release Type`[OilIncedent$`Release Type` == "Not Applicable"] <- NA
-OilIncedent <- OilIncedent[!is.na(OilIncedent$`Release Type`),]
-OilIncedent$Substance <- as.character(OilIncedent$Substance)
-OilIncedent$Substance[OilIncedent$Substance == "Not Applicable"] <- NA
-OilIncedent <- OilIncedent[!is.na(OilIncedent$Substance),]
+OilIncident$`Release Type` <- as.character(OilIncident$`Release Type`)
+OilIncident$`Release Type`[OilIncident$`Release Type` == "Not Applicable"] <- NA
+OilIncident <- OilIncident[!is.na(OilIncident$`Release Type`),]
+OilIncident$Substance <- as.character(OilIncident$Substance)
+OilIncident$Substance[OilIncident$Substance == "Not Applicable"] <- NA
+OilIncident <- OilIncident[!is.na(OilIncident$Substance),]
 
 
 state_popup <- paste0("<strong>Year: </strong>", 
-                        OilIncedent$Year,
+                        OilIncident$Year,
                       "<br><strong>Date/Time Discovered: </strong>",
-                        OilIncedent$`Discovered Date and Time`,
+                        OilIncident$`Discovered Date and Time`,
                       "<br><strong>Emergency Level: </strong>",
-                        OilIncedent$`Emergency Level`,
+                        OilIncident$`Emergency Level`,
                       "<br><strong>Location: </strong>",
-                        OilIncedent$`Nearest Populated Centre`,
+                        OilIncident$`Nearest Populated Centre`,
                       "<br><strong>Substance: </strong>", 
-                        OilIncedent$Substance,
+                        OilIncident$Substance,
                       "<br><strong>Company: </strong>",
-                        OilIncedent$Company,
+                        OilIncident$Company,
                       "<br><strong>Immediate Cause: </strong>",
-                        OilIncedent$`Immediate cause category`,
+                        OilIncident$`Immediate cause category`,
                       "<br><strong>Date Closed: </strong>",
-                        OilIncedent$`Closed Date`
+                        OilIncident$`Closed Date`
                       )
 
 
-leaflet(OilIncedent) %>% addTiles() %>% addMarkers(
+leaflet(OilIncident) %>% addTiles() %>% addMarkers(
 clusterOptions = markerClusterOptions(), popup = state_popup)
 
 ```

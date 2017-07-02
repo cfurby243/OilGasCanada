@@ -1,0 +1,65 @@
+---
+title: "OilSpillsCanada"
+author: "Caitlin Furby"
+date: "June 28, 2017"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r eruptions, echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(ggplot2)
+library(stringr)
+library(car)
+library(ggmap)
+library(sp)
+library(leaflet)
+library(geojsonio)
+library(sp)
+library(rgdal)
+library(maps)
+library(RColorBrewer)
+
+
+library(readr)
+OilIncident <- read_csv("~/OilGasCanada/ncdntcmprhnsv-eng.csv")
+attach(OilIncident)
+
+OilIncedent$`Release Type` <- as.character(OilIncedent$`Release Type`)
+OilIncedent$`Release Type`[OilIncedent$`Release Type` == "Not Applicable"] <- NA
+OilIncedent <- OilIncedent[!is.na(OilIncedent$`Release Type`),]
+OilIncedent$Substance <- as.character(OilIncedent$Substance)
+OilIncedent$Substance[OilIncedent$Substance == "Not Applicable"] <- NA
+OilIncedent <- OilIncedent[!is.na(OilIncedent$Substance),]
+
+
+state_popup <- paste0("<strong>Year: </strong>", 
+                        OilIncedent$Year,
+                      "<br><strong>Date/Time Discovered: </strong>",
+                        OilIncedent$`Discovered Date and Time`,
+                      "<br><strong>Emergency Level: </strong>",
+                        OilIncedent$`Emergency Level`,
+                      "<br><strong>Location: </strong>",
+                        OilIncedent$`Nearest Populated Centre`,
+                      "<br><strong>Substance: </strong>", 
+                        OilIncedent$Substance,
+                      "<br><strong>Company: </strong>",
+                        OilIncedent$Company,
+                      "<br><strong>Immediate Cause: </strong>",
+                        OilIncedent$`Immediate cause category`,
+                      "<br><strong>Date Closed: </strong>",
+                        OilIncedent$`Closed Date`
+                      )
+
+
+leaflet(OilIncedent) %>% addTiles() %>% addMarkers(
+clusterOptions = markerClusterOptions(), popup = state_popup)
+
+```
+
+
